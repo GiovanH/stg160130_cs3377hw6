@@ -18,9 +18,9 @@ int main(){
   cout << "Version number: " << f->header.versionNumber << endl;
   cout << "Number of records: " << f->header.numRecords << endl;
 
-  /*  for (unsigned i=0; i < f->records.size(); i++) {
-    cout << f->records[i].stringBuffer << endl;
-    }*/
+  for (unsigned i=0; i < f->records.size(); i++) {
+    cout << i << ": " << f->records[i].stringBuffer << endl;
+  }
 
   drawgrid(f);
   return 0;

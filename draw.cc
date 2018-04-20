@@ -5,11 +5,12 @@
 
 #include <iostream>
 #include <cdk.h>
+#include <algorithm> //for std::min
 #include "program6.h"
 
 #define MATRIX_WIDTH 3
 #define MATRIX_HEIGHT 5
-#define BOX_WIDTH 15
+#define BOX_WIDTH 18
 #define MATRIX_NAME_STRING "Binary File Contents"
 
 using namespace std;
@@ -71,29 +72,32 @@ void drawgrid(BinaryFile* file)
   /*
    * Fill cells with text as required
    */
-  char* magnum;// = (char*)"SENTINAL";
-  char* vernum;// = (char*)"SENTINAL";
-  char* renum;// = (char*)"SENTINAL";;
+  char* magnum = new char[BOX_WIDTH];
+  char* vernum = new char[BOX_WIDTH];
+  char* renum = new char[BOX_WIDTH];
   
   sprintf(magnum, "Magic: %02X", file->header.magicNumber);
   sprintf(vernum, "Version: %u", file->header.versionNumber);
-  sprintf(renum, "Records: %u", (unsigned)file->header.numRecords);
+  sprintf(renum, "Total Records: %u", (unsigned)file->header.numRecords);
 
   setCDKMatrixCell(myMatrix, 1, 1, magnum );
   setCDKMatrixCell(myMatrix, 1, 2, vernum );
   setCDKMatrixCell(myMatrix, 1, 3, renum );
-
-  /*
-  for (unsigned i=0; i < file->records.size(); i++) {
-    //setCDKMatrixCell(myMatrix, 2+i, 2, file->records[i].stringBuffer ); 
-    cout << file->records[i].stringBuffer << endl;
+  
+  //We can only display 4 records, so we code that into the loop condition. 
+  for (unsigned i=0; (i < file->records.size() && i < MATRIX_HEIGHT-1); i++) {
+    char* strln = new char[BOX_WIDTH];
+    char* str = file->records[i].stringBuffer;
+    sprintf(strln, "strlen: %i", (int)strlen(str));
+    setCDKMatrixCell(myMatrix, 2+i, 1, strln); 
+    setCDKMatrixCell(myMatrix, 2+i, 2, str); 
+    //   cout << records[i].stringBuffer << endl;
   }
-  */
+  
   drawCDKMatrix(myMatrix, true);    /* required  */
 
   /* Pause for user validation */
   sleep (10);
-
 
   // Cleanup screen
   endCDK();
