@@ -1,3 +1,6 @@
+//Seth Giovanetti
+//stg160130
+
 using namespace std;
 
 #include <stdint.h> //For uint types
